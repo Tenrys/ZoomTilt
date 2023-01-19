@@ -11,9 +11,11 @@ public class MainWindow : Window, IDisposable {
   private Plugin plugin;
 
   public MainWindow(Plugin plugin/* , TextureWrap goatImage */) : base(
-      "ZoomTilt", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse) {
+      "ZoomTilt", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse) {
+    var defaultSize = new Vector2(384, 112);
+    Size = defaultSize;
     SizeConstraints = new WindowSizeConstraints {
-      MinimumSize = new Vector2(384, 114),
+      MinimumSize = defaultSize,
       MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
     };
 
