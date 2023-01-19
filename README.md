@@ -8,7 +8,7 @@ Zoom out, and you will be able to see more of the world. Zoom in, the camera wil
 
 ## Contributions
 
-If you can find a better way to adjust the 3rd person camera angle so that we don't have to deal with integers and avoid rewriting the configuration option every frame, please let me know, or make a fork and send in a pull request, and I will gladly accept it. 
+If you can find a better way to adjust the 3rd person camera angle so that we don't have to deal with integers causing jitter and avoid rewriting the configuration option every frame, please let me know, or make a fork and send in a pull request, and I will gladly accept it. 
 
 I hacked this together by looking at code from [Cammy](https://github.com/UnknownX7/Cammy) and [SimpleTweaks](https://github.com/Caraxi/SimpleTweaks).
 
