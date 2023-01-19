@@ -1,5 +1,7 @@
 # ZoomTilt
 
+https://user-images.githubusercontent.com/3979239/213533348-c1cd5a31-73bc-439e-8a39-7b8451590e39.mp4
+
 Change the 3rd person camera angle character config setting depending how zoomed in you are.
 
 Zoom out, and you will be able to see more of the world. Zoom in, the camera will be focused on your character.
