@@ -8,10 +8,11 @@ namespace ZoomTilt.Windows;
 
 public class MainWindow : Window, IDisposable {
   // private TextureWrap goatImage;
-  private Plugin plugin;
+  private readonly Plugin plugin;
 
   public MainWindow(Plugin plugin/* , TextureWrap goatImage */) : base(
-      "ZoomTilt", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse) {
+    "ZoomTilt", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse
+  ) {
     var defaultSize = new Vector2(384, 112);
     Size = defaultSize;
     SizeConstraints = new WindowSizeConstraints {
@@ -24,6 +25,7 @@ public class MainWindow : Window, IDisposable {
   }
 
   public void Dispose() {
+    GC.SuppressFinalize(this);
     // this.goatImage.Dispose();
   }
 

@@ -1,9 +1,10 @@
 {
   "Author": "Tenrys",
   "Name": "ZoomTilt",
-  "Punchline": "A short one-liner that shows up in /xlplugins.",
-  "Description": "A description that shows up in /xlplugins. List any major slash-command(s).",
+  "Punchline": "Change 3rd person camera angle depending on camera zoom.",
+  "Description": "Change the 3rd person camera angle character config setting depending how zoomed in you are.\nZoom out, and you will be able to see more of the world. Zoom in, the camera will be focused on your character.",
+  "RepoUrl": "https://github.com/Tenrys/ZoomTilt",
   "InternalName": "ZoomTilt",
   "ApplicableVersion": "any",
-  "Tags": ["sample", "plugin", "goats"]
+  "Tags": ["zoom", "tilt", "camera"]
 }

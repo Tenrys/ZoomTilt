@@ -7,12 +7,11 @@ namespace ZoomTilt {
   public class Configuration : IPluginConfiguration {
     public int Version { get; set; } = 0;
 
-    // public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
     public bool Enabled { get; set; } = true;
     public int MinZoomTilt { get; set; } = 0;
     public int MaxZoomTilt { get; set; } = 100;
 
-    // the below exist just to make saving less cumbersome
+    // the below exists just to make saving less cumbersome
     [NonSerialized]
     private DalamudPluginInterface? pluginInterface;
 
