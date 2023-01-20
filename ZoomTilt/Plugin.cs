@@ -7,6 +7,7 @@ using Dalamud.Game;
 using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ZoomTilt.Structures;
+using Dalamud.Game.Gui;
 
 namespace ZoomTilt {
   public sealed unsafe class Plugin : IDalamudPlugin {
@@ -20,18 +21,21 @@ namespace ZoomTilt {
     public WindowSystem WindowSystem = new("ZoomTilt");
     private ConfigModule* configModule { get; init; }
     private CameraManager* cameraManager { get; init; }
+    private ChatGui chat { get; init; }
 
     public Plugin(
       [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
       [RequiredVersion("1.0")] CommandManager commandManager,
       [RequiredVersion("1.0")] Framework framework,
-      [RequiredVersion("1.0")] SigScanner sigScanner
+      [RequiredVersion("1.0")] SigScanner sigScanner,
+      [RequiredVersion("1.0")] ChatGui chat
     ) {
       this.pluginInterface = pluginInterface;
       this.commandManager = commandManager;
       this.framework = framework;
       this.configModule = ConfigModule.Instance();
       this.cameraManager = (CameraManager*)sigScanner.GetStaticAddressFromSig("4C 8D 35 ?? ?? ?? ?? 85 D2"); // g_ControlSystem_CameraManager
+      this.chat = chat;
 
       Configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
       Configuration.Initialize(pluginInterface);
@@ -146,7 +150,17 @@ namespace ZoomTilt {
 
     private void OnCommand(string command, string args) {
       // in response to the slash command, just display our main ui
-      DrawConfigUI();
+      var argArray = args.Split(" ");
+      if (argArray.Length == 0) {
+        DrawConfigUI();
+        return;
+      }
+
+      if (argArray[0] == "toggle") {
+        Configuration.Enabled = !Configuration.Enabled;
+        chat.Print($"ZoomTilt {(Configuration.Enabled ? "enabled" : "disabled")}");
+        return;
+      }
     }
 
     private void DrawUI() {
