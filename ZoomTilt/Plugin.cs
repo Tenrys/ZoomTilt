@@ -9,34 +9,54 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ZoomTilt.Structures;
 using Dalamud.Game.Gui;
 using Dalamud.Logging;
+using Dalamud.Game.ClientState.Conditions;
 
 namespace ZoomTilt {
   public sealed unsafe class Plugin : IDalamudPlugin {
     public string Name => "ZoomTilt";
     private const string CommandName = "/zoomtilt";
 
-    private DalamudPluginInterface pluginInterface { get; init; }
-    private CommandManager commandManager { get; init; }
     public Configuration Configuration { get; init; }
-    private Framework framework { get; init; }
-    public WindowSystem WindowSystem = new("ZoomTilt");
+    private readonly WindowSystem windowSystem = new("ZoomTilt");
     private ConfigModule* configModule { get; init; }
     private CameraManager* cameraManager { get; init; }
-    private ChatGui chat { get; init; }
 
-    public Plugin(
-      [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-      [RequiredVersion("1.0")] CommandManager commandManager,
-      [RequiredVersion("1.0")] Framework framework,
-      [RequiredVersion("1.0")] SigScanner sigScanner,
-      [RequiredVersion("1.0")] ChatGui chat
+    public class Dalamud {
+      public static void Initialize(DalamudPluginInterface pluginInterface) =>
+          pluginInterface.Create<Dalamud>();
+
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static CommandManager CommandManager { get; private set; } = null!;
+
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static Framework Framework { get; private set; } = null!;
+
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static SigScanner SigScanner { get; private set; } = null!;
+
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static ChatGui Chat { get; private set; } = null!;
+
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static Condition Condition { get; private set; } = null!;
+    }
+
+    public Plugin(DalamudPluginInterface pluginInterface
     ) {
-      this.pluginInterface = pluginInterface;
-      this.commandManager = commandManager;
-      this.framework = framework;
+      Dalamud.Initialize(pluginInterface);
+      // this.pluginInterface = pluginInterface;
+      // this.commandManager = commandManager;
+      // this.framework = framework;
       this.configModule = ConfigModule.Instance();
-      this.cameraManager = (CameraManager*)sigScanner.GetStaticAddressFromSig("4C 8D 35 ?? ?? ?? ?? 85 D2"); // g_ControlSystem_CameraManager
-      this.chat = chat;
+      this.cameraManager = (CameraManager*)Dalamud.SigScanner.GetStaticAddressFromSig("4C 8D 35 ?? ?? ?? ?? 85 D2"); // g_ControlSystem_CameraManager
 
       Configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
       Configuration.Initialize(pluginInterface);
@@ -45,24 +65,24 @@ namespace ZoomTilt {
       // var imagePath = Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "goat.png");
       // var goatImage = pluginInterface.UiBuilder.LoadImage(imagePath);
 
-      WindowSystem.AddWindow(new MainWindow(this));
+      windowSystem.AddWindow(new MainWindow(this));
 
-      commandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+      Dalamud.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
         HelpMessage = "A useful message to display in /xlhelp"
       });
 
       pluginInterface.UiBuilder.Draw += DrawUI;
       pluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
 
-      this.framework.Update += Update;
+      Dalamud.Framework.Update += Update;
     }
 
     public void Dispose() {
-      WindowSystem.RemoveAllWindows();
+      windowSystem.RemoveAllWindows();
 
-      commandManager.RemoveHandler(CommandName);
+      Dalamud.CommandManager.RemoveHandler(CommandName);
 
-      framework.Update -= Update;
+      Dalamud.Framework.Update -= Update;
     }
 
 
@@ -87,6 +107,15 @@ namespace ZoomTilt {
       var maxZoom = cameraManager->WorldCamera->MaxZoom;
       var minTilt = Configuration.MinZoomTilt;
       var maxTilt = Configuration.MaxZoomTilt;
+
+      // Meh
+      if (Dalamud.Condition[ConditionFlag.Mounted]) {
+        minTilt = (int)(minTilt * 0.75);
+      }
+      if (Dalamud.Condition[ConditionFlag.Mounted]) {
+        maxTilt = (int)(maxTilt * 0.75);
+      }
+
       var tiltOffset = (int)(
         (
           (maxTilt - minTilt) * EaseOutQuad((currentZoom - minZoom) / (maxZoom - minZoom))
@@ -160,17 +189,17 @@ namespace ZoomTilt {
 
       if (argArray[0] == "toggle") {
         Configuration.Enabled = !Configuration.Enabled;
-        chat.Print($"ZoomTilt {(Configuration.Enabled ? "enabled" : "disabled")}");
+        Dalamud.Chat.Print($"ZoomTilt {(Configuration.Enabled ? "enabled" : "disabled")}");
         return;
       }
     }
 
     private void DrawUI() {
-      WindowSystem.Draw();
+      windowSystem.Draw();
     }
 
     public void DrawConfigUI() {
-      WindowSystem.GetWindow("ZoomTilt")!.IsOpen = true;
+      windowSystem.GetWindow("ZoomTilt")!.IsOpen = true;
     }
   }
 }
