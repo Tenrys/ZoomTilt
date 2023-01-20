@@ -8,6 +8,7 @@ using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ZoomTilt.Structures;
 using Dalamud.Game.Gui;
+using Dalamud.Logging;
 
 namespace ZoomTilt {
   public sealed unsafe class Plugin : IDalamudPlugin {
@@ -150,11 +151,12 @@ namespace ZoomTilt {
 
     private void OnCommand(string command, string args) {
       // in response to the slash command, just display our main ui
-      var argArray = args.Split(" ");
-      if (argArray.Length == 0) {
+      if (args.Trim() == "") {
         DrawConfigUI();
         return;
       }
+
+      var argArray = args.Split(" ");
 
       if (argArray[0] == "toggle") {
         Configuration.Enabled = !Configuration.Enabled;
