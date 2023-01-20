@@ -110,9 +110,9 @@ namespace ZoomTilt {
 
       // Meh
       if (Dalamud.Condition[ConditionFlag.Mounted]) {
-        minTilt = (int)(minTilt * 0.75);
+        minTilt = (int)(minTilt * 0.25);
       }
-      if (Dalamud.Condition[ConditionFlag.Mounted]) {
+      if (Dalamud.Condition[ConditionFlag.InFlight]) {
         maxTilt = (int)(maxTilt * 0.75);
       }
 
