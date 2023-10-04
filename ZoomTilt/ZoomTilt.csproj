@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Tenrys</Authors>
     <Company></Company>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.0.1</Version>
     <Description>Change 3rd person camera angle depending on camera zoom.</Description>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/Tenrys/ZoomTilt</PackageProjectUrl>
@@ -25,13 +25,13 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
-  <!-- 
+  <!--
     <ItemGroup>
       <Content Include="..\Data\goat.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <Visible>false</Visible>
       </Content>
-    </ItemGroup> 
+    </ItemGroup>
   -->
 
   <PropertyGroup>
@@ -39,13 +39,12 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <PropertyGroup
-    Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
     <DalamudLibPath>$(DALAMUD_HOME)/</DalamudLibPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="2.1.10" />
+    <PackageReference Include="DalamudPackager" Version="2.1.12" />
     <Reference Include="FFXIVClientStructs">
       <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
       <Private>false</Private>

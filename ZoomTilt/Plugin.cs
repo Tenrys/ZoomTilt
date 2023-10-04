@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.Command;
+using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
@@ -7,9 +7,10 @@ using Dalamud.Game;
 using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using ZoomTilt.Structures;
-using Dalamud.Game.Gui;
-using Dalamud.Logging;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Config;
+using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
 
 namespace ZoomTilt {
   public sealed unsafe class Plugin : IDalamudPlugin {
@@ -21,6 +22,8 @@ namespace ZoomTilt {
     private ConfigModule* configModule { get; init; }
     private CameraManager* cameraManager { get; init; }
 
+    private MainWindow mainWindow { get; init; }
+
     public class Dalamud {
       public static void Initialize(DalamudPluginInterface pluginInterface) =>
           pluginInterface.Create<Dalamud>();
@@ -30,23 +33,28 @@ namespace ZoomTilt {
       public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
       [PluginService]
       [RequiredVersion("1.0")]
-      public static CommandManager CommandManager { get; private set; } = null!;
+      public static ICommandManager CommandManager { get; private set; } = null!;
 
       [PluginService]
       [RequiredVersion("1.0")]
-      public static Framework Framework { get; private set; } = null!;
+      public static IFramework Framework { get; private set; } = null!;
 
       [PluginService]
       [RequiredVersion("1.0")]
-      public static SigScanner SigScanner { get; private set; } = null!;
+      public static ISigScanner SigScanner { get; private set; } = null!;
 
       [PluginService]
       [RequiredVersion("1.0")]
-      public static ChatGui Chat { get; private set; } = null!;
+      public static IChatGui Chat { get; private set; } = null!;
 
       [PluginService]
       [RequiredVersion("1.0")]
-      public static Condition Condition { get; private set; } = null!;
+      public static ICondition Condition { get; private set; } = null!;
+
+      [PluginService]
+      [RequiredVersion("1.0")]
+      public static IGameConfig GameConfig{ get; private set; } = null!;
+
     }
 
     public Plugin(DalamudPluginInterface pluginInterface
@@ -55,7 +63,6 @@ namespace ZoomTilt {
       // this.pluginInterface = pluginInterface;
       // this.commandManager = commandManager;
       // this.framework = framework;
-      this.configModule = ConfigModule.Instance();
       this.cameraManager = (CameraManager*)Dalamud.SigScanner.GetStaticAddressFromSig("4C 8D 35 ?? ?? ?? ?? 85 D2"); // g_ControlSystem_CameraManager
 
       Configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -65,7 +72,8 @@ namespace ZoomTilt {
       // var imagePath = Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "goat.png");
       // var goatImage = pluginInterface.UiBuilder.LoadImage(imagePath);
 
-      windowSystem.AddWindow(new MainWindow(this));
+      mainWindow = new MainWindow(this);
+      windowSystem.AddWindow(mainWindow);
 
       Dalamud.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
         HelpMessage = "A useful message to display in /xlhelp"
@@ -99,7 +107,7 @@ namespace ZoomTilt {
 
     private float desiredTiltOffset;
     private float currentTiltOffset;
-    public void Update(Framework framework) {
+    public void Update(IFramework framework) {
       if (!Configuration.Enabled) return;
 
       var currentZoom = cameraManager->WorldCamera->CurrentZoom;
@@ -127,7 +135,9 @@ namespace ZoomTilt {
         framework.UpdateDelta.TotalMilliseconds / 100f,
         currentTiltOffset, desiredTiltOffset
       );
-      configModule->SetOption(ConfigOption.TiltOffset, (int)Math.Round(currentTiltOffset));
+      // [15:33]Cara: its a float with a valid range of -0.08 to 0.21
+      var actualTiltOffset = (currentTiltOffset / 100 * (0.21 - (-0.08))) + (-0.08);
+      Dalamud.GameConfig.Set(UiControlOption.TiltOffset, (float)actualTiltOffset);
     }
 
     /* This didn't work
@@ -199,7 +209,7 @@ namespace ZoomTilt {
     }
 
     public void DrawConfigUI() {
-      windowSystem.GetWindow("ZoomTilt")!.IsOpen = true;
+      mainWindow!.IsOpen = true;
     }
   }
 }
