@@ -8,11 +8,24 @@ Zoom out, and you will be able to see more of the world. Zoom in, the camera wil
 
 ## Contributions
 
-If you can find a better way to adjust the 3rd person camera angle so that we don't have to deal with integers causing jitter and avoid rewriting the configuration option every frame, please let me know, or make a fork and send in a pull request, and I will gladly accept it. 
+If you can find a better way to adjust the 3rd person camera angle so that we can avoid rewriting the configuration option every frame, please let me know, or make a fork and send in a pull request, and I will gladly accept it.
 
 I hacked this together by looking at code from [Cammy](https://github.com/UnknownX7/Cammy) and [SimpleTweaks](https://github.com/Caraxi/SimpleTweaks).
 
 ## To Use
+
+### Installation
+
+Add this URL to your list of Custom Plugin Repositories, and install the plugin using the plugin browser.
+
+`https://raw.githubusercontent.com/Tenrys/ZoomTilt/master/pluginmaster.json`
+
+You can type `/zoomtilt` in the chat to open the settings window, the plugin will work on its own.
+
+The command `/zoomtilt toggle` allows for toggling the plugin on and off, for use with QoLBar and whatnot.
+
+## Development
+
 ### Building
 
 1. Open up `ZoomTilt.sln` in your C# editor of choice (likely [Visual Studio 2022](https://visualstudio.microsoft.com) or [JetBrains Rider](https://www.jetbrains.com/rider/)).
