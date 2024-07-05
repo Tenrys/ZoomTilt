@@ -1,8 +1,9 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 // https://github.com/UnknownX7/Cammy
 
 namespace ZoomTilt.Structures {
+  /*
   [StructLayout(LayoutKind.Explicit)]
   public unsafe struct CameraManager {
     [FieldOffset(0x0)] public GameCamera* WorldCamera;
@@ -10,4 +11,5 @@ namespace ZoomTilt.Structures {
     [FieldOffset(0x10)] public GameCamera* MenuCamera;
     [FieldOffset(0x18)] public GameCamera* SpectatorCamera;
   }
+  */
 }

@@ -1,8 +1,9 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 // https://github.com/UnknownX7/Cammy
 
 namespace ZoomTilt.Structures {
+  /*
   [StructLayout(LayoutKind.Explicit)]
   public unsafe struct GameCamera {
     [FieldOffset(0x0)] public nint* VTable;
@@ -36,7 +37,7 @@ namespace ZoomTilt.Structures {
     [FieldOffset(0x228)] public byte ResetLookatHeightOffset; // No idea what to call this
                                                               //[FieldOffset(0x230)] public float InterpolatedLookAtHeightOffset;
     [FieldOffset(0x2B4)] public float LookAtZ2;
-  }
+  }*/
 
   /*
   public unsafe class VirtualTable

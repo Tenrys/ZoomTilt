@@ -3,14 +3,14 @@
   <PropertyGroup>
     <Authors>Tenrys</Authors>
     <Company></Company>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.0.2</Version>
     <Description>Change 3rd person camera angle depending on camera zoom.</Description>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/Tenrys/ZoomTilt</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Platforms>x64</Platforms>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
@@ -44,7 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="2.1.12" />
+    <PackageReference Include="DalamudPackager" Version="2.1.13" />
     <Reference Include="FFXIVClientStructs">
       <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
       <Private>false</Private>

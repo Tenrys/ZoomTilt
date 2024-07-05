@@ -11,6 +11,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Config;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
 
 namespace ZoomTilt {
   public sealed unsafe class Plugin : IDalamudPlugin {
@@ -25,45 +26,31 @@ namespace ZoomTilt {
     private MainWindow mainWindow { get; init; }
 
     public class Dalamud {
-      public static void Initialize(DalamudPluginInterface pluginInterface) =>
-          pluginInterface.Create<Dalamud>();
+      public static void Initialize(IDalamudPluginInterface pluginInterface) => pluginInterface.Create<Dalamud>();
 
       [PluginService]
-      [RequiredVersion("1.0")]
-      public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+      public static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
       [PluginService]
-      [RequiredVersion("1.0")]
       public static ICommandManager CommandManager { get; private set; } = null!;
-
       [PluginService]
-      [RequiredVersion("1.0")]
       public static IFramework Framework { get; private set; } = null!;
-
       [PluginService]
-      [RequiredVersion("1.0")]
       public static ISigScanner SigScanner { get; private set; } = null!;
-
       [PluginService]
-      [RequiredVersion("1.0")]
       public static IChatGui Chat { get; private set; } = null!;
-
       [PluginService]
-      [RequiredVersion("1.0")]
       public static ICondition Condition { get; private set; } = null!;
-
       [PluginService]
-      [RequiredVersion("1.0")]
       public static IGameConfig GameConfig{ get; private set; } = null!;
-
     }
 
-    public Plugin(DalamudPluginInterface pluginInterface
+    public Plugin(IDalamudPluginInterface pluginInterface
     ) {
       Dalamud.Initialize(pluginInterface);
       // this.pluginInterface = pluginInterface;
       // this.commandManager = commandManager;
       // this.framework = framework;
-      this.cameraManager = (CameraManager*)Dalamud.SigScanner.GetStaticAddressFromSig("4C 8D 35 ?? ?? ?? ?? 85 D2"); // g_ControlSystem_CameraManager
+      this.cameraManager = CameraManager.Instance();
 
       Configuration = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
       Configuration.Initialize(pluginInterface);
@@ -93,7 +80,6 @@ namespace ZoomTilt {
       Dalamud.Framework.Update -= Update;
     }
 
-
     public static double Lerp(double delta, double from, double to) {
       return from + ((to - from) * delta);
     }
@@ -110,9 +96,9 @@ namespace ZoomTilt {
     public void Update(IFramework framework) {
       if (!Configuration.Enabled) return;
 
-      var currentZoom = cameraManager->WorldCamera->CurrentZoom;
-      var minZoom = cameraManager->WorldCamera->MinZoom;
-      var maxZoom = cameraManager->WorldCamera->MaxZoom;
+      var currentZoom = cameraManager->Camera->Distance;
+      var minZoom = cameraManager->Camera->MinDistance;
+      var maxZoom = cameraManager->Camera->MaxDistance;
       var minTilt = Configuration.MinZoomTilt;
       var maxTilt = Configuration.MaxZoomTilt;
 
