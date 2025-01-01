@@ -6,21 +6,21 @@
     "Description": "Change 3rd person camera angle depending on camera zoom.",
     "Changelog": "Go to https://github.com/Tenrys/ZoomTilt/releases/latest to find the last changes.",
     "InternalName": "ZoomTilt",
-    "AssemblyVersion": "1.0.0.2",
+    "AssemblyVersion": "1.0.0.3",
     "RepoUrl": "https://github.com/Tenrys/ZoomTilt",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 10,
+    "DalamudApiLevel": 11,
     "ImageUrls": [],
     "LoadSync": false,
     "AcceptsFeedback": true,
     "LoadPriority": 0,
     "CanUnloadAsync": false,
-    "DownloadLinkInstall": "https://github.com/Tenrys/ZoomTilt/releases/download/1.0.0.2/latest.zip",
+    "DownloadLinkInstall": "https://github.com/Tenrys/ZoomTilt/releases/download/1.0.0.3/latest.zip",
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkTesting": "https://github.com/Tenrys/ZoomTilt/releases/download/1.0.0.2/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/Tenrys/ZoomTilt/releases/download/1.0.0.2/latest.zip",
+    "DownloadLinkTesting": "https://github.com/Tenrys/ZoomTilt/releases/download/1.0.0.3/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/Tenrys/ZoomTilt/releases/download/1.0.0.3/latest.zip",
     "DownloadCount": 0,
-    "LastUpdated": "1720207750"
+    "LastUpdated": "1735771700"
   }
 ]
