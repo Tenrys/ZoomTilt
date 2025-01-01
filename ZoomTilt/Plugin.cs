@@ -4,13 +4,10 @@ using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
 using ZoomTilt.Windows;
 using Dalamud.Game;
-using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using ZoomTilt.Structures;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Config;
 using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 
 namespace ZoomTilt {
