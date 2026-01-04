@@ -3,7 +3,6 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
 using ZoomTilt.Windows;
-using Dalamud.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Config;
