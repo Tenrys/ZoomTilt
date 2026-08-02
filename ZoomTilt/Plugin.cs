@@ -75,6 +75,8 @@ namespace ZoomTilt {
       Dalamud.CommandManager.RemoveHandler(CommandName);
 
       Dalamud.Framework.Update -= Update;
+      Dalamud.PluginInterface.UiBuilder.Draw -= DrawUI;
+      Dalamud.PluginInterface.UiBuilder.OpenConfigUi -= DrawConfigUI;
     }
 
     public static double Lerp(double delta, double from, double to) {
