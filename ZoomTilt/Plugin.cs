@@ -86,7 +86,7 @@ namespace ZoomTilt {
     // private static double EaseOutCubic(double x) {
     //   return 1 - Math.Pow(1 - x, 3);
     // }
-    // Holds min tilt below edge0, rises through an S-curve, pins max tilt above edge1
+    public static double EaseOutQuad(double x) => 1 - ((1 - x) * (1 - x));
     public static double SmoothStep(double edge0, double edge1, double x) {
       var t = Math.Clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
       return t * t * (3 - (2 * t));
@@ -113,11 +113,11 @@ namespace ZoomTilt {
 
       var zoomProgress = (currentZoom - minZoom) / (maxZoom - minZoom);
       // Fully zoomed in always drops to 0 tilt regardless of the configured min;
-      // the configured min is the baseline reached just past the dip.
-      // Both segments have zero slope at 0.08, so the join is seamless.
+      // the configured min is the baseline reached just past the dip, then the
+      // ease-out rises over the whole remaining zoom range.
       var tiltOffset = (int)(zoomProgress < 0.08
         ? minTilt * SmoothStep(0.0, 0.08, zoomProgress)
-        : minTilt + ((maxTilt - minTilt) * SmoothStep(0.08, 0.55, zoomProgress))
+        : minTilt + ((maxTilt - minTilt) * EaseOutQuad((zoomProgress - 0.08) / 0.92))
       );
       desiredTiltOffset = tiltOffset;
       currentTiltOffset = (float)Lerp(
