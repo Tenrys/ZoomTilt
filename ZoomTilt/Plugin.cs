@@ -95,13 +95,15 @@ namespace ZoomTilt {
     private float desiredTiltOffset;
     private float currentTiltOffset;
     public void Update(IFramework framework) {
-      if (!Configuration.Enabled) return;
+      if (!Configuration.Enabled || cameraManager == null || cameraManager->Camera == null) return;
 
       var currentZoom = cameraManager->Camera->Distance;
       var minZoom = cameraManager->Camera->MinDistance;
       var maxZoom = cameraManager->Camera->MaxDistance;
       var minTilt = Configuration.MinZoomTilt;
       var maxTilt = Configuration.MaxZoomTilt;
+
+      if (maxZoom <= minZoom) return;
 
       // Meh
       if (Dalamud.Condition[ConditionFlag.Mounted]) {
